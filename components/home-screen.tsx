@@ -6,12 +6,17 @@ import { contactData } from "@/lib/data";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import {
 	ArrowRight,
+	Briefcase,
 	ChevronDown,
 	Download,
 	Github,
 	Linkedin,
 	Mail,
 	Phone,
+	Rocket,
+	Smartphone,
+	User,
+	Wrench,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -56,37 +61,64 @@ export default function HomeScreen({ navigateTo }: HomeScreenProps) {
 		},
 	};
 
-	// Define app icons with enhanced gradients - all using the same white gradient
+	// Use Lucide React icons for app icons
 	const appIcons = [
 		{
 			name: "About",
-			icon: "👨‍💻",
+			icon: <User className="h-6 w-6 text-gray-200" />,
 			screen: "about",
 			color: "from-gray-800 to-gray-900",
 		},
 		{
 			name: "Experience",
-			icon: "💼",
+			icon: <Briefcase className="h-6 w-6 text-gray-200" />,
 			screen: "experience",
 			color: "from-gray-800 to-gray-900",
 		},
 		{
 			name: "Projects",
-			icon: "🚀",
+			icon: <Rocket className="h-6 w-6 text-gray-200" />,
 			screen: "projects",
 			color: "from-gray-800 to-gray-900",
 		},
 		{
 			name: "Skills",
-			icon: "🛠️",
+			icon: <Wrench className="h-6 w-6 text-gray-200" />,
 			screen: "skills",
 			color: "from-gray-800 to-gray-900",
 		},
 		{
 			name: "Contact",
-			icon: "📱",
+			icon: <Smartphone className="h-6 w-6 text-gray-200" />,
 			screen: "contact",
 			color: "from-gray-800 to-gray-900",
+		},
+	];
+
+	const navCards = [
+		{
+			title: "About",
+			icon: <User className="h-6 w-6 text-gray-200" />,
+			screen: "about",
+			gradient: "from-gray-800 to-gray-900",
+		},
+		{
+			title: "Experience",
+			icon: <Briefcase className="h-6 w-6 text-gray-200" />,
+			screen: "experience",
+			gradient: "from-gray-800 to-gray-900",
+		},
+		{
+			title: "Projects",
+			icon: <Rocket className="h-6 w-6 text-gray-200" />,
+			screen: "projects",
+			gradient: "from-gray-800 to-gray-900",
+		},
+		{
+			title: "Skills",
+			icon: <Wrench className="h-6 w-6 text-gray-200" />,
+			screen: "skills",
+			gradient: "from-gray-800 to-gray-900",
 		},
 	];
 
@@ -238,7 +270,7 @@ export default function HomeScreen({ navigateTo }: HomeScreenProps) {
 											<div
 												className={`flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br ${app.color} shadow-lg mb-1`}
 											>
-												<span className="text-2xl">{app.icon}</span>
+												{app.icon}
 											</div>
 											<span className="text-xs font-medium text-gray-300 hover:text-gray-300">
 												{app.name}
@@ -250,34 +282,9 @@ export default function HomeScreen({ navigateTo }: HomeScreenProps) {
 						)}
 					</AnimatePresence>
 				</motion.div>
-				Navigation Cards with Enhanced Design
+				{/* Navigation Cards with Enhanced Design */}
 				<motion.div variants={item} className="grid grid-cols-2 gap-4">
-					{[
-						{
-							title: "About",
-							icon: "",
-							screen: "about",
-							gradient: "from-gray-800 to-gray-900",
-						},
-						{
-							title: "Experience",
-							icon: "",
-							screen: "experience",
-							gradient: "from-gray-800 to-gray-900",
-						},
-						{
-							title: "Projects",
-							icon: "",
-							screen: "projects",
-							gradient: "from-gray-800 to-gray-900",
-						},
-						{
-							title: "Skills",
-							icon: "",
-							screen: "skills",
-							gradient: "from-gray-800 to-gray-900",
-						},
-					].map((item) => (
+					{navCards.map((item) => (
 						<motion.button
 							key={item.title}
 							whileHover={{ scale: 1.05, y: -5 }}
@@ -296,7 +303,7 @@ export default function HomeScreen({ navigateTo }: HomeScreenProps) {
 						</motion.button>
 					))}
 				</motion.div>
-				Contact Button with Enhanced Design
+				{/* Contact Button with Enhanced Design */}
 				<motion.div variants={item} className="mt-6">
 					<Button
 						variant="outline"

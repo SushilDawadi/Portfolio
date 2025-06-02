@@ -65,14 +65,15 @@ export const projectsData: Project[] = [
 		image: "/simplepatro.png",
 		link: "https://play.google.com/store/search?q=simple%20patro&c=apps&hl=en",
 	},
+
 	{
-		title: "CV Maker",
+		title: "Arthasetu",
 		description:
-			"An application that allows users to create professional CVs with customizable templates and export options.",
-		role: "Flutter Developer",
-		technologies: ["Flutter", "Dart", "PDF Generation", "Local Storage"],
-		image: "/cvmaker.png",
-		link: "https://play.google.com/store/apps/details?id=com.aarambhait.CVMaker&hl=en",
+			"Business and finance management app with inventory management, finance tracking, and communication features.",
+		role: "Full Stack Developer",
+		technologies: ["Flutter", "TypeScript", "Node.js", "MongoDB", "Socket.io"],
+		image: "/arthasetu.png",
+		//github: "https://github.com/sushildawadi/arthasetu",
 	},
 	{
 		title: "Trip Haru",
@@ -84,6 +85,7 @@ export const projectsData: Project[] = [
 
 		link: "https://play.google.com/store/apps/details?id=com.tripharu.android&hl=en",
 	},
+
 	{
 		title: "RestroPoint",
 		description:
@@ -98,20 +100,19 @@ export const projectsData: Project[] = [
 		title: "CV Maker",
 		description:
 			"An application that allows users to create professional CVs with customizable templates and export options.",
+		role: "Flutter Developer",
+		technologies: ["Flutter", "Dart", "PDF Generation", "Local Storage"],
+		image: "/cvmaker.png",
+		link: "https://play.google.com/store/apps/details?id=com.aarambhait.CVMaker&hl=en",
+	},
+	{
+		title: "CV Maker",
+		description:
+			"An application that allows users to create professional CVs with customizable templates and export options.",
 		role: "Flutter Intern",
 		technologies: ["Flutter", "Dart", "PDF Generation", "Local Storage"],
 		image: "/cvmakereverest.png",
 		link: "https://play.google.com/store/apps/details?id=com.techeverest.cvmaker&hl=en",
-	},
-
-	{
-		title: "Arthasetu",
-		description:
-			"Business and finance management app with inventory management, finance tracking, and communication features.",
-		role: "Full Stack Developer",
-		technologies: ["Flutter", "TypeScript", "Node.js", "MongoDB", "Socket.io"],
-		image: "/arthasetu.png",
-		//github: "https://github.com/sushildawadi/arthasetu",
 	},
 ];
 

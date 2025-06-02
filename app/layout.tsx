@@ -32,7 +32,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${inter.variable} ${ibmPlexMono.variable} font-sans bg-white dark:bg-black text-black dark:text-white`}
+				className={`${inter.variable} ${ibmPlexMono.variable} font-sans bg-white dark:bg-black text-black dark:text-white `}
 			>
 				<ThemeProvider attribute="class" defaultTheme="dark">
 					<Navbar />

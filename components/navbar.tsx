@@ -3,14 +3,39 @@
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { Briefcase, Home, Mail, Rocket, User, Wrench } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface NavbarProps {
 	currentScreen: string;
 	navigateTo: (screen: string) => void;
+	loaderShowing?: boolean;
 }
 
-export default function Navbar({ currentScreen, navigateTo }: NavbarProps) {
+/**
+ * The Navbar will:
+ * - Not render at all if loaderShowing is true (default: false)
+ * - Not render at all on first paint, only after mount (prevents double render/animation bug)
+ * - Be less wide on desktop (width fits icon buttons; no max-w-md)
+ * - On mobile, vertical navbar at side (left: 0, top: 50%, transform: -translate-y-1/2), with gap from screen edge
+ * - On mobile, navbar is smaller (narrower, smaller icons, less padding) and will not overlap/hide mobile frame
+ * - On mobile, will NOT show drop-shadow when selected
+ * - Otherwise, keep all interactions and visuals the same
+ */
+export default function Navbar({
+	currentScreen,
+	navigateTo,
+	loaderShowing = false,
+}: NavbarProps) {
 	const isMobile = useMediaQuery("(max-width: 768px)");
+
+	// --- Fix for "showing two from starting": ---
+	// Prevent rendering until after first client mount, so animation only happens once
+	const [mounted, setMounted] = useState(false);
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+	if (!mounted || loaderShowing) return null;
+	// --------------------------------------------
 
 	const navItems = [
 		{
@@ -53,31 +78,41 @@ export default function Navbar({ currentScreen, navigateTo }: NavbarProps) {
 
 	return (
 		<motion.nav
-			initial={{ y: 80, opacity: 0 }}
-			animate={{ y: 0, opacity: 1 }}
+			initial={isMobile ? { x: -80, opacity: 0 } : { y: 80, opacity: 0 }}
+			animate={isMobile ? { x: 0, opacity: 1 } : { y: 0, opacity: 1 }}
 			transition={{ delay: 0.2, duration: 0.5, type: "spring", stiffness: 200 }}
 			className={`
 				fixed z-50
-				w-full
 				${
 					isMobile
-						? "bottom-0 left-0 px-0"
-						: "bottom-8 left-1/2 -translate-x-1/2 max-w-md"
+						? "top-1/2 left-2 -translate-y-1/2 w-auto"
+						: "w-fit left-1/2 -translate-x-1/2 bottom-8"
 				}
 				pointer-events-auto
 			`}
+			style={
+				isMobile
+					? { minWidth: "unset", maxWidth: "unset" }
+					: { minWidth: undefined, maxWidth: "max-content" }
+			}
 			role="navigation"
-			aria-label="Bottom navigation"
+			aria-label="Side navigation"
 		>
 			<div
 				className={`
-					flex ${
+					flex
+					${
 						isMobile
-							? "justify-between bg-black/90 border-t border-white/10 rounded-t-3xl py-2 px-2 shadow-2xl"
-							: "items-center bg-black/70 rounded-full border border-white/10 shadow-xl p-2 mx-auto"
+							? "flex-col items-center bg-black/90 border-l border-white/10 rounded-l-2xl py-1 px-1 gap-1"
+							: "items-center bg-black/70 rounded-full border border-white/10 shadow-xl p-1 gap-1 mx-auto"
 					}
 					backdrop-blur
 				`}
+				style={
+					!isMobile
+						? { width: "fit-content", maxWidth: "max-content" }
+						: undefined
+				}
 			>
 				{navItems.map((item) => {
 					const Icon = item.icon;
@@ -91,8 +126,7 @@ export default function Navbar({ currentScreen, navigateTo }: NavbarProps) {
 							aria-current={isActive ? "page" : undefined}
 							className={`
 								group relative flex flex-col items-center justify-center
-								${isMobile ? "flex-1 min-w-0 mx-1" : ""}
-								${isMobile ? "h-14 w-full" : "h-12 w-12"}
+								${isMobile ? "flex-none min-h-0 my-0.5 h-9 w-9" : "h-10 w-10 mx-0.5"}
 								bg-transparent
 								${isActive ? "text-white" : "text-gray-400 hover:text-white"}
 								transition-colors
@@ -100,7 +134,7 @@ export default function Navbar({ currentScreen, navigateTo }: NavbarProps) {
 								overflow-visible
 								rounded-xl
 							`}
-							whileHover={isMobile ? { scale: 1.06 } : { scale: 1.12 }}
+							whileHover={isMobile ? { scale: 1.08 } : { scale: 1.12 }}
 							whileTap={{ scale: 0.93 }}
 						>
 							<AnimatePresence>
@@ -109,7 +143,7 @@ export default function Navbar({ currentScreen, navigateTo }: NavbarProps) {
 										layoutId="activeTab"
 										className={`absolute ${
 											isMobile
-												? "left-1/2 -translate-x-1/2 bottom-2 h-8 w-16"
+												? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-8 w-8"
 												: "inset-0"
 										}  
 											${
@@ -117,7 +151,7 @@ export default function Navbar({ currentScreen, navigateTo }: NavbarProps) {
 													? `bg-gradient-to-r ${item.gradient} rounded-full opacity-80`
 													: "bg-white/10 rounded-full"
 											}
-											${isMobile ? "blur-[2px]" : ""}
+											${isMobile ? "blur-[1.5px]" : ""}
 										`}
 										style={isMobile ? { zIndex: 0 } : {}}
 										transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -126,9 +160,9 @@ export default function Navbar({ currentScreen, navigateTo }: NavbarProps) {
 							</AnimatePresence>
 							<span className="relative z-10 flex flex-col items-center w-full">
 								<Icon
-									className={`${isActive ? "drop-shadow-lg" : ""} ${
-										isMobile ? "h-6 w-6" : "h-6 w-6"
-									} transition-all`}
+									className={`${
+										!isMobile && isActive ? "drop-shadow-lg" : ""
+									} ${isMobile ? "h-4 w-4" : "h-5 w-5"} transition-all`}
 								/>
 							</span>
 							{/* Desktop: show label as animated floating on hover/active */}
