@@ -16,6 +16,10 @@ export const metadata = {
 	description:
 		"Flutter Developer with a Passion for Building Mobile Experiences",
 	generator: "v0.dev",
+	icons: {
+		icon: [{ url: "/favicon.ico" }, { url: "/icon.png", type: "image/png" }],
+		apple: "/apple-icon.png",
+	},
 };
 
 export const viewport = {

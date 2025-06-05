@@ -120,7 +120,7 @@ export const skillsData = {
 	categories: [
 		{
 			name: "Languages & Frameworks",
-			skills: ["Dart", "Flutter", "Node.js", "TypeScript"],
+			skills: ["Dart", "Flutter", "Node.js", "TypeScript ", "JavaScript"],
 		},
 		{
 			name: "State Management & Architecture",
