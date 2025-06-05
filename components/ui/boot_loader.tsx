@@ -28,7 +28,6 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
 			transition={{ duration: 0.5 }}
 			className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50"
 		>
-			{/* Apple Logo */}
 			<motion.div
 				initial={{ scale: 0.8, opacity: 0 }}
 				animate={{ scale: 1, opacity: 1 }}
@@ -46,7 +45,6 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
 				</svg>
 			</motion.div>
 
-			{/* Progress Bar */}
 			<div className="w-48 h-1 bg-gray-800 rounded-full overflow-hidden">
 				<motion.div
 					className="h-full bg-white rounded-full"
