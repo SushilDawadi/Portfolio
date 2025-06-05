@@ -11,21 +11,12 @@ import SkillsScreen from "@/components/skills-screen";
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Home() {
 	const [currentScreen, setCurrentScreen] = useState("home");
 	const [previousScreen, setPreviousScreen] = useState<string | null>(null);
 	const [direction, setDirection] = useState(0);
-	const [isFirstLoad, setIsFirstLoad] = useState(true);
-
-	useEffect(() => {
-		// Simulate iPhone boot animation
-		const timer = setTimeout(() => {
-			setIsFirstLoad(false);
-		}, 2000);
-		return () => clearTimeout(timer);
-	}, []);
 
 	const navigateTo = (screen: string) => {
 		setPreviousScreen(currentScreen);
@@ -114,105 +105,54 @@ export default function Home() {
 				</div>
 			</div>
 
-			{isFirstLoad ? (
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					className="flex flex-col items-center justify-center"
-				>
-					<motion.div
-						initial={{ scale: 0.8, opacity: 0 }}
-						animate={{ scale: 1, opacity: 1 }}
-						transition={{ duration: 0.5, delay: 0.2 }}
+			<div className="fixed top-4 left-4 z-50">
+				{currentScreen !== "home" && (
+					<Button
+						variant="ghost"
+						size="icon"
+						onClick={goBack}
+						className="rounded-full bg-black/20 text-white hover:bg-black/40"
 					>
-						<svg
-							width="120"
-							height="120"
-							viewBox="0 0 100 100"
-							className="text-white"
-						>
-							<motion.path
-								d="M50 5 L95 50 L50 95 L5 50 Z"
-								fill="none"
-								stroke="currentColor"
-								strokeWidth="5"
-								initial={{ pathLength: 0 }}
-								animate={{ pathLength: 1 }}
-								transition={{ duration: 1.5, ease: "easeInOut" }}
-							/>
-							<motion.path
-								d="M25 50 L75 50 M50 25 L50 75"
-								fill="none"
-								stroke="currentColor"
-								strokeWidth="5"
-								initial={{ pathLength: 0, opacity: 0 }}
-								animate={{ pathLength: 1, opacity: 1 }}
-								transition={{ duration: 1, delay: 0.8, ease: "easeInOut" }}
-							/>
-						</svg>
-					</motion.div>
-					<motion.h1
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 1.2 }}
-						className="mt-6 text-2xl font-bold text-white font-mono"
-					>
-						SUSHIL DAWADI
-					</motion.h1>
-				</motion.div>
-			) : (
-				<>
-					<div className="fixed top-4 left-4 z-50">
-						{currentScreen !== "home" && (
-							<Button
-								variant="ghost"
-								size="icon"
-								onClick={goBack}
-								className="rounded-full bg-black/20 text-white hover:bg-black/40"
+						<ArrowLeft className="h-5 w-5" />
+						<span className="sr-only">Back</span>
+					</Button>
+				)}
+			</div>
+
+			{/* Responsive IPhoneFrame: Centered with max-w-xs on small screens, original on md+ */}
+			<div className="w-full flex justify-center items-center">
+				<div className="w-full max-w-xs md:max-w-[380px]">
+					<IPhoneFrame>
+						<AnimatePresence mode="wait" initial={false}>
+							<motion.div
+								key={currentScreen}
+								initial={{
+									x: direction * 300,
+									opacity: 0,
+								}}
+								animate={{
+									x: 0,
+									opacity: 1,
+								}}
+								exit={{
+									x: direction * -300,
+									opacity: 0,
+								}}
+								transition={{
+									type: "spring",
+									stiffness: 300,
+									damping: 30,
+								}}
+								className="h-full w-full overflow-y-auto"
 							>
-								<ArrowLeft className="h-5 w-5" />
-								<span className="sr-only">Back</span>
-							</Button>
-						)}
-					</div>
+								{renderScreen()}
+							</motion.div>
+						</AnimatePresence>
+					</IPhoneFrame>
+				</div>
+			</div>
 
-					{/* Responsive IPhoneFrame: Centered with max-w-xs on small screens, original on md+ */}
-					<div className="w-full flex justify-center items-center">
-						<div className="w-full max-w-xs md:max-w-[380px]">
-							<IPhoneFrame>
-								<AnimatePresence mode="wait" initial={false}>
-									<motion.div
-										key={currentScreen}
-										initial={{
-											x: direction * 300,
-											opacity: 0,
-										}}
-										animate={{
-											x: 0,
-											opacity: 1,
-										}}
-										exit={{
-											x: direction * -300,
-											opacity: 0,
-										}}
-										transition={{
-											type: "spring",
-											stiffness: 300,
-											damping: 30,
-										}}
-										className="h-full w-full overflow-y-auto"
-									>
-										{renderScreen()}
-									</motion.div>
-								</AnimatePresence>
-							</IPhoneFrame>
-						</div>
-					</div>
-
-					<Navbar currentScreen={currentScreen} navigateTo={navigateTo} />
-				</>
-			)}
+			<Navbar currentScreen={currentScreen} navigateTo={navigateTo} />
 		</main>
 	);
 }
